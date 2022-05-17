@@ -1,0 +1,255 @@
+<div class='fido-container'>
+  <div class='fido-form'>
+    <form #fidoForm="ngForm" fodiForm>
+      <fieldset class="form-group">
+        <legend class="col-form-label">
+          <h4>User Information</h4>
+        </legend>
+        <div class="row">
+          <div class="col">User name</div>
+          <div class="col-8">
+            <div class="form-check">
+              <input type="text" name="username" class="form-control" required [(ngModel)]="username" required
+                #usernameFormctrl="ngModel" />
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div *ngIf="usernameFormctrl.invalid && (usernameFormctrl.dirty || usernameFormctrl.touched) || isSubmited"
+            class='col  error-msg'>
+            <div *ngIf="usernameFormctrl.errors?.['required']">
+              <p>UserName is required.</p>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col">Display name</div>
+          <div class="col-8">
+            <div class="form-check">
+              <input class="form-control" type="text" [(ngModel)]="displayName" name='displayName'
+                #displayNameFormctrl="ngModel" required />
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div
+            *ngIf="displayNameFormctrl.invalid && (displayNameFormctrl.dirty || displayNameFormctrl.touched) || isSubmited"
+            class='col error-msg'>
+            <div *ngIf="displayNameFormctrl.errors?.['required']">
+              Display Name is required.
+            </div>
+          </div>
+        </div>
+
+      </fieldset>
+
+      <legend class="col-form-label">
+        <h4>Register credential Options</h4>
+      </legend>
+      <div class="row">
+        <div class="col">
+          <p>Attestation conveyance preference</p>
+        </div>
+        <div class="col-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="specifyAttestationConvenyance"
+              id="specifyAttestationConvenyance" value="specifyAttestationConvenyance"
+              [(ngModel)]="specifyAttestationConvenyance" checked />
+            Specify
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="attestationConveyancePreference"
+              id="attestationConveyancePreferenceNone" value="none" [(ngModel)]="attestationConveyancePreference"
+              checked />
+            <label class="form-check-label" for="attestationConveyancePreferenceNone">
+              None (default)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="attestationConveyancePreference"
+              id="attestationConveyancePreferenceIndirect" [(ngModel)]="attestationConveyancePreference"
+              value="indirect" />
+            <label class="form-check-label" for="attestationConveyancePreferenceIndirect">
+              Indirect
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="attestationConveyancePreference"
+              id="attestationConveyancePreferenceDirect" [(ngModel)]="attestationConveyancePreference" value="direct" />
+            <label class="form-check-label" for="attestationConveyancePreferenceIndirect">
+              Direct
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="attestationConveyancePreference"
+              id="attestationConveyancePreferenceDirect" [(ngModel)]="attestationConveyancePreference"
+              value="enterprise" />
+            <label class="form-check-label" for="attestationConveyancePreferenceIndirect">
+              Enterprise
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <b>Authenticator selection</b>
+        </div>
+        <div class="col-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="specifyAuthenticatorSelection"
+              id="specifyAuthenticatorSelection" value="specifyAuthenticatorSelection"
+              [(ngModel)]="specifyAuthenticatorSelection" checked />
+            Specify
+          </div>
+        </div>
+        <div class="col-6"></div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col"> Authenticator Attachment</div>
+        <div class="col-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="specifyAuthenticatorAttachment"
+              id="specifyAuthenticatorAttachment" value="specifyAuthenticatorAttachment"
+              [(ngModel)]="specifyAuthenticatorAttachment" checked />
+            Specify
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="attachment" id="attachmentPlatform" value="platform"
+              [(ngModel)]="attachmentPlatform" checked />
+            <ng-container *ngIf="isSupportAttachmentPlatform; else notSupportAttPlatform">
+              <label class="form-check-label" for="attachmentPlatform">
+                On bound (platform) authenticator
+              </label>
+            </ng-container>
+            <ng-template #notSupportAttPlatform>
+              <label>
+                On bound (platform) authenticator
+                <span class="errorText">- Reported as not available</span>
+              </label>
+            </ng-template>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="attachment" id="attachmentCrossPlatform"
+              value="cross-platform" [(ngModel)]="attachmentPlatform" />
+            <label class="form-check-label" for="attachmentCrossPlatform">
+              On roaming (cross-platform) authenticator
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col"> Require resident key (username-less flow)</div>
+        <div class="col-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="requireResidentKey" id="requireResidentKey"
+              value="requireResidentKey" [(ngModel)]="requireResidentKey" checked />
+            Default to unchecked
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col">
+          User verification required (also for authentication)
+        </div>
+        <div class="col-6">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="userVerificationRequired"
+              id="userVerificationRequiredRequired" value="required" [(ngModel)]="userVerificationRequired" />
+            <label class="form-check-label" for="userVerificationRequiredRequired">
+              Required
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="userVerificationRequired"
+              id="userVerificationRequiredPreferred" value="preferred" [(ngModel)]="userVerificationRequired" checked />
+            <label class="form-check-label" for="userVerificationRequiredPreferred">
+              Preferred (default)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="userVerificationRequired"
+              id="userVerificationRequiredDiscouraged" value="discouraged" [(ngModel)]="userVerificationRequired" />
+            <label class="form-check-label" for="userVerificationRequiredDiscouraged">
+              Discouraged
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col">
+          <b>CredProtect Extension</b>
+        </div>
+        <div class="col-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="enableCredProtect" id="enableCredProtect"
+              [(ngModel)]="enableCredProtect" value="enableCredProtect" />
+            Specify
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="enforceCredentialProtectionPolicy"
+              id="enforceCredentialProtectionPolicy" [(ngModel)]="enforceCredentialProtectionPolicy"
+              value="enforceCredentialProtectionPolicy" />
+            Enforce policy (default unchecked)
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="credentialProtectionPolicy" id="userVerificationOptional"
+              value="userVerificationOptional" [(ngModel)]="credentialProtectionPolicy" checked />
+            <label class="form-check-label" for="userVerificationOptional">
+              User Verification Optional
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="credentialProtectionPolicy"
+              id="userVerificationOptionalWithCredentialIDList" value="userVerificationOptionalWithCredentialIDList"
+              [(ngModel)]="credentialProtectionPolicy" />
+            <label class="form-check-label" for="userVerificationOptionalWithCredentialIDList">
+              User Verification Optional With CredentialID List
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="credentialProtectionPolicy" id="userVerificationRequired"
+              value="userVerificationRequired" [(ngModel)]="credentialProtectionPolicy" />
+            <label class="form-check-label" for="userVerificationRequired">
+              User Verification Required
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+      <div class='btn-container'>
+        <button type="button" class='btn btn-primary' (click)="registerButtonClicked()">Register</button>
+        <button type="button" class='btn btn-primary' (click)="authenticateButtonClicked()">Authenticate</button>
+        <button type="button" class='btn btn-primary' (click)="resetForm()">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <div class='msg-area'>
+    <div class='msg-content'>
+      <ul>
+        <li>
+          aaaaa
+        </li>
+        <li>
+          bbbbb
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

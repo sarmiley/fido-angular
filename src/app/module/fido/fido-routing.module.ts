@@ -1,11 +1,15 @@
-import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FidoComponent } from './fido.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: FidoComponent,
+  },
+  {
+    path: 'fido',
+    component: FidoComponent,
   },
 ];
 
@@ -13,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MainRoutingModule { }
+export class FidoRoutingModule { }

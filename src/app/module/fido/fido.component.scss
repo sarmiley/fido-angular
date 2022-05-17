@@ -1,0 +1,23 @@
+.fido-container {
+  margin: 5vh auto;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+}
+
+.fido-form {
+  padding-right: 5vw;
+  flex: 0 1 70%;
+}
+
+.error-msg {
+  color: red;
+}
+
+.msg-area {
+  flex: 0 1 30%;
+}
+
+.btn-container button {
+  margin-left: 15px;
+}

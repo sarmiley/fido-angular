@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
   }
 
   registerButtonClicked(): void {
-    console.log('rrrr');
     if (this.username === '') {
       this.statusText = 'Input user name first';
       this.isShowStatusMSg = true;
@@ -65,7 +64,7 @@ export class HomeComponent implements OnInit {
       username: this.username,
       displayName: this.displayName,
       authenticatorSelection: {},
-      attestation: this.specifyAttestationConvenyance ? this.attestation : {},
+      attestation: this.specifyAttestationConvenyance ? this.attestation : '',
       credProtect: this.enableCredProtect
         ? {
           credentialProtectionPolicy: this.credentialProtectionPolicy,
@@ -83,28 +82,14 @@ export class HomeComponent implements OnInit {
           ? this.attachment
           : null,
       };
-      // set authenticator attachment
-      // if (this.specifyAuthenticatorAttachment) {
-      //   authenticatorSelection.authenticatorAttachment = this.attachment;
-      // }
       serverPublicKeyCredentialCreationOptionsRequest.authenticatorSelection =
         authenticatorSelection;
     }
 
-    // set attestation conveyance preference
-    // if (this.specifyAttestationConvenyance) {
-    //   serverPublicKeyCredentialCreationOptionsRequest.attestation = this.attestation;
-    // }
-
-    // if (this.enableCredProtect) {
-    //   serverPublicKeyCredentialCreationOptionsRequest.credProtect = {
-    //     credentialProtectionPolicy: this.credentialProtectionPolicy,
-    //     enforceCredentialProtectionPolicy: this.enforceCredentialProtectionPolicy ?? null
-    //   };
-    // }
-
     this.getRegChallenge(serverPublicKeyCredentialCreationOptionsRequest)
       .then((createCredentialOptions) => {
+        console.log(createCredentialOptions);
+
         return this.createCredential(createCredentialOptions);
       })
       .then(() => {
@@ -168,10 +153,10 @@ export class HomeComponent implements OnInit {
   }
 
   getAuthChallenge(serverPublicKeyCredentialGetOptionsRequest: any) {
-    this.logObject("Get auth challenge", serverPublicKeyCredentialGetOptionsRequest);
+    // this.logObject("Get auth challenge", serverPublicKeyCredentialGetOptionsRequest);
     return this.rest_post("/assertion/options", serverPublicKeyCredentialGetOptionsRequest)
       .then(response => {
-        this.logObject("Get auth challenge", response);
+        // this.logObject("Get auth challenge", response);
         if (response.status !== 'ok') {
           return Promise.reject(response.errorMessage);
         } else {
@@ -221,7 +206,7 @@ export class HomeComponent implements OnInit {
     }
 
     return navigator.credentials
-      .create({ publicKey: options, signal: this.abortSignal })
+      .create({ publicKey: options })
       .then((rawAttestation: any) => {
         this.logObject('raw attestation', rawAttestation);
 
@@ -240,16 +225,6 @@ export class HomeComponent implements OnInit {
           type: rawAttestation.type,
           extensions: rawAttestation.getClientExtensionResult ? rawAttestation.getClientExtensionResults() : {},
         };
-
-        // if (rawAttestation.getClientExtensionResults) {
-        //   attestation.extensions = rawAttestation.getClientExtensionResults();
-        // }
-
-        // set transports if it is available
-        // if (typeof rawAttestation.response.getTransports === 'function') {
-        //   attestation.response.transports =
-        //     rawAttestation.response.getTransports();
-        // }
 
         console.log('=== Attestation response ===');
         this.logVariable('rawId (b64url)', attestation.rawId);
@@ -319,7 +294,9 @@ export class HomeComponent implements OnInit {
 
     return navigator.credentials.get({ publicKey: options, signal: this.abortSignal })
       .then((rawAssertion: any) => {
-        this.logObject("raw assertion", rawAssertion);
+        console.log("======= rawAssertion ========");
+        console.log(rawAssertion);
+
 
         let assertion = {
           rawId: this.base64UrlEncode(rawAssertion?.rawId),
@@ -334,18 +311,15 @@ export class HomeComponent implements OnInit {
           extensions: rawAssertion.getClientExtensionResults ? rawAssertion.getClientExtensionResults() : {}
         };
 
-        // if (rawAssertion.getClientExtensionResults) {
-        //     assertion.extensions = rawAssertion.getClientExtensionResults();
-        // }
 
-        console.log("=== Assertion response ===");
-        this.logVariable("rawId (b64url)", assertion.rawId);
-        this.logVariable("id (b64url)", assertion.id);
-        this.logVariable("response.userHandle (b64url)", assertion.response.userHandle);
-        this.logVariable("response.authenticatorData (b64url)", assertion.response.authenticatorData);
-        this.logVariable("response.lientDataJSON", assertion.response.clientDataJSON);
-        this.logVariable("response.signature (b64url)", assertion.response.signature);
-        this.logVariable("id", assertion.type);
+        // console.log("=== Assertion response ===");
+        // this.logVariable("rawId (b64url)", assertion.rawId);
+        // this.logVariable("id (b64url)", assertion.id);
+        // this.logVariable("response.userHandle (b64url)", assertion.response.userHandle);
+        // this.logVariable("response.authenticatorData (b64url)", assertion.response.authenticatorData);
+        // this.logVariable("response.lientDataJSON", assertion.response.clientDataJSON);
+        // this.logVariable("response.signature (b64url)", assertion.response.signature);
+        // this.logVariable("id", assertion.type);
 
         return this.rest_post("/assertion/result", assertion);
       })
@@ -384,7 +358,7 @@ export class HomeComponent implements OnInit {
 
     this.removeEmpty(makeCredReq);
 
-    this.logObject('Updating credentials ', makeCredReq);
+    // this.logObject('Updating credentials ', makeCredReq);
     return makeCredReq;
   };
 

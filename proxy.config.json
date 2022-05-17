@@ -1,0 +1,12 @@
+{
+    "/attestation": {
+        "target": "http://localhost:8080/",
+        "secure": false,
+        "changeOrigin": true
+    },
+    "/assertion": {
+      "target": "http://localhost:8080/",
+      "secure": false,
+      "changeOrigin": true
+  }
+}
