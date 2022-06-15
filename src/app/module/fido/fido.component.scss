@@ -7,17 +7,40 @@
 
 .fido-form {
   padding-right: 5vw;
-  flex: 0 1 70%;
+  flex: 0 1 60%;
 }
 
 .error-msg {
   color: red;
 }
 
-.msg-area {
-  flex: 0 1 30%;
+.success-msg {
+  color: #12c412
 }
+
 
 .btn-container button {
   margin-left: 15px;
+}
+
+.msg-area {
+  flex: 0 1 40%;
+  max-width: 40%;
+  max-height: 800px;
+  overflow: scroll;
+}
+
+.msg-content {
+  word-wrap: break-word;
+  & li {
+    padding: 10px 20px;
+    margin-bottom: 3px;
+  }
+}
+
+
+.status-title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }

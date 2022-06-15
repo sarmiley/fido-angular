@@ -1,5 +1,5 @@
 import { MessageService } from './common/message/message.service';
-import { HomeModule } from './module/home/home.module';
+import { SampleModule } from './module/sample/sample.module';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [AppComponent],
   imports: [BrowserModule,
     AppRoutingModule,
-    HomeModule,
+    SampleModule,
     HttpClientModule,
   ],
   providers: [

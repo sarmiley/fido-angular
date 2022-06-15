@@ -1,7 +1,7 @@
 export interface ServerPublicKeyCredentialCreationOptionsRequest {
   username: string;
   displayName: string;
-  attestation: string;
+  attestation: string | null;
   authenticatorSelection?: AuthenticatorSelection | {},
   credProtect?: CredProtect | {},
 }

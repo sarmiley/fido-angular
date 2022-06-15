@@ -8,10 +8,10 @@ export class ErrorLogHandler implements ErrorHandler {
 
   handleError(error: any): void {
     if (error instanceof HttpErrorResponse) {
-      console.log(error);
+      console.error(error);
       this.message.add(`${error.message}`);
     } else {
-      console.log(error);
+      console.error(error);
       this.message.add(error);
     }
   }

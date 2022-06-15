@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-sample',
+  templateUrl: './sample.component.html',
+  styleUrls: ['./sample.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class SampleComponent implements OnInit {
   isRegBtnShow = false;
   isAuthenticateBtnShow = false;
   isShowStatusMSg = false;
@@ -103,7 +103,36 @@ export class HomeComponent implements OnInit {
 
         this.enableControls();
       });
+    // this.getMakeCredentialsChallenge(serverPublicKeyCredentialCreationOptionsRequest)
   }
+
+  getMakeCredentialsChallenge = (formBody: any) => {
+    console.log(' run getMakeCredentialsChallenge');
+
+    let serverURL = 'http://localhost:4200';
+
+    /* Remove trailing slash */
+    if (serverURL.endsWith('/'))
+      serverURL = serverURL.substr(0, serverURL.length - 1);
+
+    return fetch(serverURL + '/attestation/options', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formBody)
+    })
+      .then((response) => {
+        console.log(response);
+        let option = this.performMakeCredReq(response)
+        console.log(option);
+        this.createCredential(option)
+
+        return response
+      })
+  }
+
 
 
   authenticateButtonClicked() {
@@ -169,7 +198,7 @@ export class HomeComponent implements OnInit {
   rest_post(endpoint: any, object: any) {
     return fetch(endpoint, {
       method: 'POST',
-      credentials: 'same-origin',
+      credentials: 'include',
       body: JSON.stringify(object),
       headers: {
         'content-type': 'application/json',
@@ -204,7 +233,7 @@ export class HomeComponent implements OnInit {
         'WebAuthn APIs are not available on this user agent.'
       );
     }
-
+    this.logObject('navigator.credentials.create options', options);
     return navigator.credentials
       .create({ publicKey: options })
       .then((rawAttestation: any) => {

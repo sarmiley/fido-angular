@@ -83,14 +83,14 @@
               Direct
             </label>
           </div>
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input class="form-check-input" type="radio" name="attestationConveyancePreference"
               id="attestationConveyancePreferenceDirect" [(ngModel)]="attestationConveyancePreference"
               value="enterprise" />
             <label class="form-check-label" for="attestationConveyancePreferenceIndirect">
               Enterprise
             </label>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -235,21 +235,30 @@
       <div class='btn-container'>
         <button type="button" class='btn btn-primary' (click)="registerButtonClicked()">Register</button>
         <button type="button" class='btn btn-primary' (click)="authenticateButtonClicked()">Authenticate</button>
-        <button type="button" class='btn btn-primary' (click)="resetForm()">Reset</button>
+        <!-- <button type="button" class='btn btn-primary' (click)="resetForm()">Reset</button> -->
       </div>
     </form>
   </div>
 
   <div class='msg-area'>
+    <div class='status-title'>
+      <div>
+        <b>Status</b>
+      </div>
+      <div class='status-clear-btn'>
+        <button class='btn btn-secondary' (click)="clearAllStatusMsg()">clear</button>
+      </div>
+    </div>
     <div class='msg-content'>
-      <ul>
-        <li>
-          aaaaa
-        </li>
-        <li>
-          bbbbb
-        </li>
-      </ul>
+      <div *ngIf="resTextMsgs.length > 0">
+        <ul>
+          <ng-container *ngFor="let msgItem of getReverseStatusMsg()">
+            <li [ngClass]="{'alert-primary': msgItem.isSuccess, 'alert alert-danger' : !msgItem.isSuccess}">
+              {{msgItem.statusMsg}}
+            </li>
+          </ng-container>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
